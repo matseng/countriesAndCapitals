@@ -1,7 +1,7 @@
 var app = angular.module('MyApp', ['ngRoute']);
 
 app.config(function($locationProvider, $routeProvider) {
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);  //TODO: not working when copy paste url into browser
     $routeProvider
     .when('/', {
       templateUrl: './partials/home.html',
@@ -13,13 +13,24 @@ app.config(function($locationProvider, $routeProvider) {
     }) 
   })
 
-app.controller('HomeController', function($scope, $location) {
+app.controller('HomeController', function($scope, $location, $http) {
     $scope.clicked = function() {
-      // window.location.href = '/countries'
-      console.log("hello world");
       $location.path('/countries');
+
     }
   })
-  .controller('CountriesController', function($scope) {
-
+  .controller('CountriesController', function($scope, $http) {
+      var url = 'http://api.geonames.org/countryInfoJSON?';
+      params = {username: 'matseng'}
+      $http({
+        method: 'GET',
+        url: url,
+        params: params
+      })
+      .success(function(data, status) {
+        console.log("hello world", data, status);
+      })
+      .error(function(data, status) {
+        console.log("hello world", data, status);
+      })
   });
